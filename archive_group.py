@@ -4,7 +4,6 @@ Yahoo-Groups-Archiver Copyright 2015 Andrew Ferguson
 YahooGroups-Archiver, a simple python script that allows for all
 messages in a public Yahoo Group to be archived.
 
-
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -19,25 +18,62 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
+yahoo_username = "joe-blogs"
+yahoo_password = "password"
+
 import json #required for reading various JSON attributes from the content
 import urllib2 #required for fetching the raw messages
 import os #required for checking if a file exists locally
 import time #required if Yahoo blocks access temporarily (to wait)
 import sys #required to cancel script if blocked by Yahoo
+import shutil #required for deletung an old folder
+import glob #required to find the most recent message downloaded
 
-def archive_group(groupName):
+def archive_group(groupName, mode="update"):
+	if mode == "retry":
+		#don't archive any messages we already have
+		#but try to archive ones that we don't, and may have
+		#already attempted to archive
+		min = 1
+	elif mode == "update":
+		#start archiving at the last+1 message message we archived
+		mostRecent = 1
+		os.chdir(groupName)
+		for file in glob.glob("*.json"):
+			if int(file[0:-5]) > mostRecent:
+				mostRecent = int(file[0:-5])
+		min = mostRecent
+		os.chdir("../")
+	elif mode == "restart":
+		#delete all previous archival attempts and archive everything again
+		if os.path.exists(groupName):
+			shutil.rmtree(groupName)
+		min = 1
+		
+	else:
+		print "You have specified an invalid mode (" + mode + ")."
+		print "Valid modes are:\nupdate- add any new messages to the archive\nretry - attempt to get all messages that are not in the archive\nrestart - delete archive and start from scratch"
+		sys.exit()
+	
 	if not os.path.exists(groupName):
 		os.makedirs(groupName)
 	max = group_messages_max(groupName)
-	for x in range(1,max+1):
+	for x in range(min,max+1):
 		if not os.path.isfile(groupName + '/' + str(x) + ".json"):
-			log("Archiving message " + str(x) + " of " + str(max))
+			print ("Archiving message " + str(x) + " of " + str(max))
 			archive_message(groupName, x)
 		
 
 def group_messages_max(groupName):
 	resp = urllib2.urlopen('https://groups.yahoo.com/api/v1/groups/' + groupName + '/messages?count=1&sortOrder=desc&direction=-1')
-	pageJson = json.loads(resp.read())
+	try:
+		pageHTML = resp.read()
+		pageJson = json.loads(pageHTML)
+	except ValueError:
+		if "Sign in to your account" in pageHTML and "Keep me signed in" in pageHTML:
+			#the user needs to be signed in to Yahoo
+			print "Error. The group you are trying to archive is a private group. Only public groups (groups who's messages can be viewed by non-members) can be archived at this time (hopefully will change soon...)"
+			sys.exit()
 	return pageJson["ygData"]["totalRecords"]
 
 def archive_message(groupName, msgNumber, depth=0):
@@ -76,4 +112,4 @@ def log(msg):
 	logF = open("log.txt", "a")
 	logF.write("\n" + msg)
 
-archive_group(sys.argv[1])
+archive_group(sys.argv[1], sys.argv[2])
