@@ -1,9 +1,21 @@
 #YahooGroups-Archiver
 
-##A simple python script that archives all messages from a public Yahoo Group
+####A simple python script that archives all messages from a public Yahoo Group
 
-Yahoo Groups is "one of the worlds largest collections of online discussion boards". It was launched in 1998 as Yahoo Clubs.
+YahooGroups-Archiver allows you to make a backup copy of all the messages in a public group. (Currently there is no support for groups that require a sign in before viewing messages, but this may change). Not only is all the message content downloaded, but also all other raw data that Yahoo uses to display the messages.
 
-However, Yahoo does not seem to care for it, putting your data at risk. In fact in 2013, Yahoo shut down Yahoo Groups Japan.
+Messages are downloaded in a JSON format.
 
-Don't let Yahoo delete your data: create a backup with YahooGroups-Archiver.
+##Usage
+**`python archive_group.py <groupName> [options]`**
+where *`<groupName>`* is the name of the group you wish to archive (e.g: hypercard)
+
+Currently there are no *`[options]`* available, so just ignore that bit at the moment.
+
+##Note
+This script uses a Yahoo API, which may be removed at any time.
+
+Yahoo also activly tries to block connections that it deems to be "spamming", and so after around 15,000 messages have been downloaded it is highly likely that Yahoo will block you. This is OK, the script will automatically stop, and Yahoo should unblock you after around two hours. Running the script again once you have been unblocked will just continue where it left off.
+
+##Credits
+Thanks to the [Archive Team](http://archiveteam.org/) for making [information about the Yahoo Groups API](http://www.archiveteam.org/index.php?title=Yahoo!_Groups) available.
