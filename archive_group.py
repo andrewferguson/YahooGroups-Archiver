@@ -95,7 +95,7 @@ def archive_message(groupName, msgNumber, depth=0):
 				log("Check if you can access the group's homepage from your browser. If you can't, you have been blocked.")
 				log("Don't worry, in a few hours (normally less than 3) you'll be unblocked and you can run this script again - it'll continue where you left off.")
 				sys.exit()
-			log("Failed to retrive message " + str(msgNumber) )
+			log("Failed to retrive message " + str(msgNumber), groupName )
 			failed = True
 	
 	if failed == True:
@@ -107,9 +107,9 @@ def archive_message(groupName, msgNumber, depth=0):
 	writeFile.close()
 			
 
-def log(msg):
+def log(msg, groupName):
 	print msg
-	logF = open("log.txt", "a")
+	logF = open(groupName + ".txt", "a")
 	logF.write("\n" + msg)
 
 if len(sys.argv) > 2:
