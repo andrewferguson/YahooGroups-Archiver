@@ -10,7 +10,10 @@ Messages are downloaded in a JSON format.
 **`python archive_group.py <groupName> [options]`**
 where *`<groupName>`* is the name of the group you wish to archive (e.g: hypercard)
 
-Currently there are no *`[options]`* available, so just ignore that bit at the moment.
+**Options**
+* *`update`* - the default., Archive all new messages since the last time the script was run
+* *`retry`* - Archive any new messages, and attempt to archive any messages that could not be downloaded last time
+* *`restart`* - Delete all previously archived messages and archive again from scratch
 
 ##Note
 This script uses a Yahoo API, which may be removed at any time.
