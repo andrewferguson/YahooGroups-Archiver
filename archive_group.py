@@ -112,4 +112,7 @@ def log(msg):
 	logF = open("log.txt", "a")
 	logF.write("\n" + msg)
 
-archive_group(sys.argv[1], sys.argv[2])
+if len(sys.argv) > 2:
+	archive_group(sys.argv[1], sys.argv[2])
+else:
+	archive_group(sys.argv[1])
