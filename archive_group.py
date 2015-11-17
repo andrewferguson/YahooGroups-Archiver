@@ -28,8 +28,12 @@ import time #required if Yahoo blocks access temporarily (to wait)
 import sys #required to cancel script if blocked by Yahoo
 import shutil #required for deletung an old folder
 import glob #required to find the most recent message downloaded
+import time #required to log the date and time of run
 
 def archive_group(groupName, mode="update"):
+	log("\nArchiving group '" + groupName + "', mode: " + mode + " , on " + time.strftime("%c"))
+	startTime = time.time()
+	msgsArchived = 0
 	if mode == "retry":
 		#don't archive any messages we already have
 		#but try to archive ones that we don't, and may have
@@ -61,7 +65,11 @@ def archive_group(groupName, mode="update"):
 	for x in range(min,max+1):
 		if not os.path.isfile(groupName + '/' + str(x) + ".json"):
 			print ("Archiving message " + str(x) + " of " + str(max))
-			archive_message(groupName, x)
+			sucsess = archive_message(groupName, x)
+			if sucsess == True:
+				msgsArchived = msgsArchived + 1
+	
+	log("Archive finished, archived " + msgsArchived + ", time taken is " + str(time.time() - startTime) + "seconds")
 		
 
 def group_messages_max(groupName):
@@ -99,12 +107,13 @@ def archive_message(groupName, msgNumber, depth=0):
 			failed = True
 	
 	if failed == True:
-		return
+		return False
 	
 	msgJson = resp.read()
 	writeFile = open((groupName + "/" + str(msgNumber) + ".json"), "wb")
 	writeFile.write(msgJson)
 	writeFile.close()
+	return True
 			
 
 def log(msg, groupName):
