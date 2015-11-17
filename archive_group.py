@@ -42,10 +42,12 @@ def archive_group(groupName, mode="update"):
 	elif mode == "update":
 		#start archiving at the last+1 message message we archived
 		mostRecent = 1
-		os.chdir(groupName)
-		for file in glob.glob("*.json"):
-			if int(file[0:-5]) > mostRecent:
-				mostRecent = int(file[0:-5])
+		if os.path.exists(groupName):
+			os.chdir(groupName)
+			for file in glob.glob("*.json"):
+				if int(file[0:-5]) > mostRecent:
+					mostRecent = int(file[0:-5])
+		
 		min = mostRecent
 		os.chdir("../")
 	elif mode == "restart":
