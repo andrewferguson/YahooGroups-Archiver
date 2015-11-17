@@ -31,7 +31,7 @@ import glob #required to find the most recent message downloaded
 import time #required to log the date and time of run
 
 def archive_group(groupName, mode="update"):
-	log("\nArchiving group '" + groupName + "', mode: " + mode + " , on " + time.strftime("%c"))
+	log("\nArchiving group '" + groupName + "', mode: " + mode + " , on " + time.strftime("%c"), groupName)
 	startTime = time.time()
 	msgsArchived = 0
 	if mode == "retry":
@@ -69,7 +69,7 @@ def archive_group(groupName, mode="update"):
 			if sucsess == True:
 				msgsArchived = msgsArchived + 1
 	
-	log("Archive finished, archived " + msgsArchived + ", time taken is " + str(time.time() - startTime) + "seconds")
+	log("Archive finished, archived " + msgsArchived + ", time taken is " + str(time.time() - startTime) + "seconds", groupName)
 		
 
 def group_messages_max(groupName):
@@ -99,9 +99,9 @@ def archive_message(groupName, msgNumber, depth=0):
 		else:
 			if str(e) == "HTTP Error 500: Server Error":
 				#we are most likely being blocked by Yahoo
-				log("Archive halted - it appears Yahoo has blocked you.")
-				log("Check if you can access the group's homepage from your browser. If you can't, you have been blocked.")
-				log("Don't worry, in a few hours (normally less than 3) you'll be unblocked and you can run this script again - it'll continue where you left off.")
+				log("Archive halted - it appears Yahoo has blocked you.", groupName)
+				log("Check if you can access the group's homepage from your browser. If you can't, you have been blocked.", groupName)
+				log("Don't worry, in a few hours (normally less than 3) you'll be unblocked and you can run this script again - it'll continue where you left off." ,groupName)
 				sys.exit()
 			log("Failed to retrive message " + str(msgNumber), groupName )
 			failed = True
