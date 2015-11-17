@@ -71,7 +71,7 @@ def archive_group(groupName, mode="update"):
 			if sucsess == True:
 				msgsArchived = msgsArchived + 1
 	
-	log("Archive finished, archived " + msgsArchived + ", time taken is " + str(time.time() - startTime) + "seconds", groupName)
+	log("Archive finished, archived " + str(msgsArchived) + ", time taken is " + str(time.time() - startTime) + " seconds", groupName)
 		
 
 def group_messages_max(groupName):
