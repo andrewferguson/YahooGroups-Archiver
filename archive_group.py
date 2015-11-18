@@ -124,15 +124,14 @@ def log(msg, groupName):
 	logF = open(groupName + ".txt", "a")
 	logF.write("\n" + msg)
 
-<<<<<<< HEAD
+
 if __name__ == "__main__":
 	if len(sys.argv) > 2:
 		archive_group(sys.argv[1], sys.argv[2])
 	else:
 		archive_group(sys.argv[1])
-=======
+
 if len(sys.argv) > 2:
 	archive_group(sys.argv[1], sys.argv[2])
 else:
 	archive_group(sys.argv[1])
->>>>>>> 9a7b23618dbd2a565cd559dee797a5bedb70c391
