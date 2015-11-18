@@ -43,13 +43,14 @@ def archive_group(groupName, mode="update"):
 		#start archiving at the last+1 message message we archived
 		mostRecent = 1
 		if os.path.exists(groupName):
+			oldDir = os.getcwd()
 			os.chdir(groupName)
 			for file in glob.glob("*.json"):
 				if int(file[0:-5]) > mostRecent:
 					mostRecent = int(file[0:-5])
+			os.chdir(oldDir)
 		
 		min = mostRecent
-		os.chdir("../")
 	elif mode == "restart":
 		#delete all previous archival attempts and archive everything again
 		if os.path.exists(groupName):
@@ -123,7 +124,15 @@ def log(msg, groupName):
 	logF = open(groupName + ".txt", "a")
 	logF.write("\n" + msg)
 
+<<<<<<< HEAD
+if __name__ == "__main__":
+	if len(sys.argv) > 2:
+		archive_group(sys.argv[1], sys.argv[2])
+	else:
+		archive_group(sys.argv[1])
+=======
 if len(sys.argv) > 2:
 	archive_group(sys.argv[1], sys.argv[2])
 else:
 	archive_group(sys.argv[1])
+>>>>>>> 9a7b23618dbd2a565cd559dee797a5bedb70c391
