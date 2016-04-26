@@ -131,8 +131,3 @@ if __name__ == "__main__":
 		archive_group(sys.argv[1], sys.argv[2])
 	else:
 		archive_group(sys.argv[1])
-
-if len(sys.argv) > 2:
-		archive_group(sys.argv[1], sys.argv[2])
-	else:
-		archive_group(sys.argv[1])
