@@ -59,7 +59,7 @@ def archive_group(groupName, mode="update"):
 		
 	else:
 		print "You have specified an invalid mode (" + mode + ")."
-		print "Valid modes are:\nupdate- add any new messages to the archive\nretry - attempt to get all messages that are not in the archive\nrestart - delete archive and start from scratch"
+		print "Valid modes are:\nupdate - add any new messages to the archive\nretry - attempt to get all messages that are not in the archive\nrestart - delete archive and start from scratch"
 		sys.exit()
 	
 	if not os.path.exists(groupName):
@@ -126,12 +126,13 @@ def log(msg, groupName):
 
 
 if __name__ == "__main__":
+	os.chdir(os.path.dirname(os.path.abspath(__file__)))
 	if len(sys.argv) > 2:
 		archive_group(sys.argv[1], sys.argv[2])
 	else:
 		archive_group(sys.argv[1])
 
 if len(sys.argv) > 2:
-	archive_group(sys.argv[1], sys.argv[2])
-else:
-	archive_group(sys.argv[1])
+		archive_group(sys.argv[1], sys.argv[2])
+	else:
+		archive_group(sys.argv[1])
