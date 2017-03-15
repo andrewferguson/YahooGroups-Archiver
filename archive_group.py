@@ -18,8 +18,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-yahoo_username = "joe-blogs"
-yahoo_password = "password"
+cookie_T = ''
+cookie_y = ''
 
 import json #required for reading various JSON attributes from the content
 import urllib2 #required for fetching the raw messages
@@ -81,7 +81,7 @@ def group_messages_max(groupName):
 		pageHTML = resp.read()
 		pageJson = json.loads(pageHTML)
 	except ValueError:
-		if "Sign in to your account" in pageHTML and "Keep me signed in" in pageHTML:
+		if "Stay signed in" in pageHTML and "Trouble signing in" in pageHTML:
 			#the user needs to be signed in to Yahoo
 			print "Error. The group you are trying to archive is a private group. Only public groups (groups who's messages can be viewed by non-members) can be archived at this time (hopefully will change soon...)"
 			sys.exit()
