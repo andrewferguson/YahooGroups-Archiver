@@ -1,5 +1,5 @@
 '''
-Yahoo-Groups-Archiver Copyright 2015 Andrew Ferguson
+Yahoo-Groups-Archiver Copyright 2015, 2017 Andrew Ferguson
 
 YahooGroups-Archiver, a simple python script that allows for all
 messages in a public Yahoo Group to be archived.
@@ -19,10 +19,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 cookie_T = ''
-cookie_y = ''
+cookie_Y = ''
 
 import json #required for reading various JSON attributes from the content
-import urllib2 #required for fetching the raw messages
+import requests #required for fetching the raw messages
 import os #required for checking if a file exists locally
 import time #required if Yahoo blocks access temporarily (to wait)
 import sys #required to cancel script if blocked by Yahoo
@@ -76,9 +76,10 @@ def archive_group(groupName, mode="update"):
 		
 
 def group_messages_max(groupName):
-	resp = urllib2.urlopen('https://groups.yahoo.com/api/v1/groups/' + groupName + '/messages?count=1&sortOrder=desc&direction=-1')
+        s = requests.Session()
+	resp = s.get('https://groups.yahoo.com/api/v1/groups/' + groupName + '/messages?count=1&sortOrder=desc&direction=-1', cookies={'T': cookie_T, 'Y': cookie_Y})
 	try:
-		pageHTML = resp.read()
+		pageHTML = resp.text
 		pageJson = json.loads(pageHTML)
 	except ValueError:
 		if "Stay signed in" in pageHTML and "Trouble signing in" in pageHTML:
@@ -90,9 +91,9 @@ def group_messages_max(groupName):
 def archive_message(groupName, msgNumber, depth=0):
 	global failed
 	failed = False
-	try:
-		resp = urllib2.urlopen('https://groups.yahoo.com/api/v1/groups/' + groupName + '/messages/' + str(msgNumber) + '/raw')
-	except urllib2.HTTPError, e:
+	s = requests.Session()
+        resp = s.get('https://groups.yahoo.com/api/v1/groups/' + groupName + '/messages/' + str(msgNumber) + '/raw', cookies={'T': cookie_T, 'Y': cookie_Y})
+	if resp.status_code != 200:
 		#some other problem, perhaps being refused access by Yahoo?
 		#retry for a max of 3 times anyway
 		if depth < 3:
@@ -100,7 +101,7 @@ def archive_message(groupName, msgNumber, depth=0):
 			time.sleep(0.1)
 			archive_message(groupName,msgNumber,depth+1)
 		else:
-			if str(e) == "HTTP Error 500: Server Error":
+			if resp.status_code == 500:
 				#we are most likely being blocked by Yahoo
 				log("Archive halted - it appears Yahoo has blocked you.", groupName)
 				log("Check if you can access the group's homepage from your browser. If you can't, you have been blocked.", groupName)
@@ -112,7 +113,7 @@ def archive_message(groupName, msgNumber, depth=0):
 	if failed == True:
 		return False
 	
-	msgJson = resp.read()
+	msgJson = resp.text
 	writeFile = open((groupName + "/" + str(msgNumber) + ".json"), "wb")
 	writeFile.write(msgJson)
 	writeFile.close()
