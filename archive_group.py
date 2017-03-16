@@ -18,8 +18,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-cookie_T = ''
-cookie_Y = ''
+cookie_T = 'COOKIE_T_DATA_GOES_HERE'
+cookie_Y = 'COOKIE_Y_DATA_GOES_HERE'
 
 import json #required for reading various JSON attributes from the content
 import requests #required for fetching the raw messages
@@ -84,7 +84,7 @@ def group_messages_max(groupName):
 	except ValueError:
 		if "Stay signed in" in pageHTML and "Trouble signing in" in pageHTML:
 			#the user needs to be signed in to Yahoo
-			print "Error. The group you are trying to archive is a private group. Only public groups (groups who's messages can be viewed by non-members) can be archived at this time (hopefully will change soon...)"
+			print "Error. The group you are trying to archive is a private group. To archive a private group using this tool, login to a Yahoo account that has access to the private groups, then extract the data from the cookies Y and T from the domain yahoo.com . Paste this data into the appropriate variables (cookie_Y and cookie_T) at the top of this script, and run the script again."
 			sys.exit()
 	return pageJson["ygData"]["totalRecords"]
 
