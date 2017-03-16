@@ -115,7 +115,7 @@ def archive_message(groupName, msgNumber, depth=0):
 	
 	msgJson = resp.text
 	writeFile = open((groupName + "/" + str(msgNumber) + ".json"), "wb")
-	writeFile.write(msgJson)
+	writeFile.write(msgJson.encode('utf-8'))
 	writeFile.close()
 	return True
 			
