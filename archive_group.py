@@ -97,7 +97,7 @@ def archive_message(groupName, msgNumber, depth=0):
 		#some other problem, perhaps being refused access by Yahoo?
 		#retry for a max of 3 times anyway
 		if depth < 3:
-			print "Cannot get message " + str(msgNumber) + ", attempt " + str(depth+1) + " of 3"
+			print "Cannot get message " + str(msgNumber) + ", attempt " + str(depth+1) + " of 3 due to HTTP status code " + str(resp.status_code)
 			time.sleep(0.1)
 			archive_message(groupName,msgNumber,depth+1)
 		else:
