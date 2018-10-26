@@ -1,5 +1,5 @@
 '''
-Yahoo-Groups-Archiver Copyright 2015, 2017 Andrew Ferguson
+Yahoo-Groups-Archiver Copyright 2015, 2017, 2018 Andrew Ferguson and others
 
 YahooGroups-Archiver, a simple python script that allows for all
 messages in a public Yahoo Group to be archived.
@@ -58,8 +58,8 @@ def archive_group(groupName, mode="update"):
 		min = 1
 		
 	else:
-		print "You have specified an invalid mode (" + mode + ")."
-		print "Valid modes are:\nupdate - add any new messages to the archive\nretry - attempt to get all messages that are not in the archive\nrestart - delete archive and start from scratch"
+		print ("You have specified an invalid mode (" + mode + ").")
+		print ("Valid modes are:\nupdate - add any new messages to the archive\nretry - attempt to get all messages that are not in the archive\nrestart - delete archive and start from scratch")
 		sys.exit()
 	
 	if not os.path.exists(groupName):
@@ -76,7 +76,7 @@ def archive_group(groupName, mode="update"):
 		
 
 def group_messages_max(groupName):
-        s = requests.Session()
+	s = requests.Session()
 	resp = s.get('https://groups.yahoo.com/api/v1/groups/' + groupName + '/messages?count=1&sortOrder=desc&direction=-1', cookies={'T': cookie_T, 'Y': cookie_Y})
 	try:
 		pageHTML = resp.text
@@ -84,7 +84,7 @@ def group_messages_max(groupName):
 	except ValueError:
 		if "Stay signed in" in pageHTML and "Trouble signing in" in pageHTML:
 			#the user needs to be signed in to Yahoo
-			print "Error. The group you are trying to archive is a private group. To archive a private group using this tool, login to a Yahoo account that has access to the private groups, then extract the data from the cookies Y and T from the domain yahoo.com . Paste this data into the appropriate variables (cookie_Y and cookie_T) at the top of this script, and run the script again."
+			print ("Error. The group you are trying to archive is a private group. To archive a private group using this tool, login to a Yahoo account that has access to the private groups, then extract the data from the cookies Y and T from the domain yahoo.com . Paste this data into the appropriate variables (cookie_Y and cookie_T) at the top of this script, and run the script again.")
 			sys.exit()
 	return pageJson["ygData"]["totalRecords"]
 
@@ -92,12 +92,12 @@ def archive_message(groupName, msgNumber, depth=0):
 	global failed
 	failed = False
 	s = requests.Session()
-        resp = s.get('https://groups.yahoo.com/api/v1/groups/' + groupName + '/messages/' + str(msgNumber) + '/raw', cookies={'T': cookie_T, 'Y': cookie_Y})
+	resp = s.get('https://groups.yahoo.com/api/v1/groups/' + groupName + '/messages/' + str(msgNumber) + '/raw', cookies={'T': cookie_T, 'Y': cookie_Y})
 	if resp.status_code != 200:
 		#some other problem, perhaps being refused access by Yahoo?
 		#retry for a max of 3 times anyway
 		if depth < 3:
-			print "Cannot get message " + str(msgNumber) + ", attempt " + str(depth+1) + " of 3 due to HTTP status code " + str(resp.status_code)
+			print ("Cannot get message " + str(msgNumber) + ", attempt " + str(depth+1) + " of 3 due to HTTP status code " + str(resp.status_code))
 			time.sleep(0.1)
 			archive_message(groupName,msgNumber,depth+1)
 		else:
@@ -121,7 +121,7 @@ def archive_message(groupName, msgNumber, depth=0):
 			
 
 def log(msg, groupName):
-	print msg
+	print (msg)
 	logF = open(groupName + ".txt", "a")
 	logF.write("\n" + msg)
 
