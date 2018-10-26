@@ -8,6 +8,8 @@ Messages are downloaded in a JSON format, with one .json file per message.
 
 There is support for private groups, but this requires that you have a Yahoo groups account that has access to the private groups you want to archive. See the 'Private Groups' section for more info.
 
+Works with both Python 2 and Python 3.
+
 ## Usage
 **`python archive_group.py <groupName> [options]`**
 where *`<groupName>`* is the name of the group you wish to archive (e.g: hypercard)
