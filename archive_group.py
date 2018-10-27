@@ -107,7 +107,7 @@ def archive_message(groupName, msgNumber, depth=0):
 				log("Check if you can access the group's homepage from your browser. If you can't, you have been blocked.", groupName)
 				log("Don't worry, in a few hours (normally less than 3) you'll be unblocked and you can run this script again - it'll continue where you left off." ,groupName)
 				sys.exit()
-			log("Failed to retrive message " + str(msgNumber), groupName )
+			log("Failed to retrive message " + str(msgNumber) + " due to HTTP status code " + str(resp.status_code), groupName )
 			failed = True
 	
 	if failed == True:
@@ -120,14 +120,23 @@ def archive_message(groupName, msgNumber, depth=0):
 	return True
 			
 
+global writeLogFile
 def log(msg, groupName):
 	print (msg)
-	logF = open(groupName + ".txt", "a")
-	logF.write("\n" + msg)
+	if writeLogFile:
+		logF = open(groupName + ".txt", "a")
+		logF.write("\n" + msg)
+		logF.close()
 
 
 if __name__ == "__main__":
+	global writeLogFile
+	writeLogFile = True
 	os.chdir(os.path.dirname(os.path.abspath(__file__)))
+	if "nologs" in sys.argv:
+		print ("Logging mode OFF")
+		writeLogFile = False
+		sys.argv.remove("nologs")
 	if len(sys.argv) > 2:
 		archive_group(sys.argv[1], sys.argv[2])
 	else:
