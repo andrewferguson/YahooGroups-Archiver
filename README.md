@@ -11,7 +11,7 @@ There is support for private groups, but this requires that you have a Yahoo gro
 Works with both Python 2 and Python 3.
 
 ## Usage
-**`python archive_group.py <groupName> [options]`**
+**`python archive_group.py <groupName> [options] [nologs]`**
 where *`<groupName>`* is the name of the group you wish to archive (e.g: hypercard)
 
 **Options**
@@ -20,6 +20,8 @@ where *`<groupName>`* is the name of the group you wish to archive (e.g: hyperca
 * *`restart`* - Delete all previously archived messages and archive again from scratch
 
 Please note that you can only have one *Option*, if you specify more than one, only the first will be used, with the others being ignored.
+
+By default a log file called <groupname>.txt is created and stores information such as what messages could not be received. This is entirely for the benefit of the user: it's not needed at all by the script during any re-runs (although re-runs will append new information to the log file). If you don't want a log file to be created or added to, add the `nologs` keyword when you call the script.
 
 ## Private Groups
 It is possible to archive private groups using this tool, but the way to go about doing this is slighly fiddly at the moment. Rather than simply providing your login information for the Yahoo account that has access to the private groups, you need to provide two pieces of information from Yahoo's login cookies (small files created by web browsers to store data for various uses, such as allowing you to login to websites and then stay logged in for a certain period of time).
