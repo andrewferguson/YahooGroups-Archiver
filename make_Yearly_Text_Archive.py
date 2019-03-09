@@ -53,6 +53,9 @@ def getYahooMessageYear(file):
     emailMessageTimeStamp = jsonDoc['ygData']['postDate']
     return datetime.fromtimestamp(float(emailMessageTimeStamp)).year
 
+# Thank you to the help in this forum for the bulk of this function
+# https://stackoverflow.com/questions/17874360/python-how-to-parse-the-body-from-a-raw-email-given-that-raw-email-does-not
+
 def getEmailBody(message):
     body = ''
     if message.is_multipart():
@@ -68,6 +71,8 @@ def getEmailBody(message):
     else:
         body += message.get_payload(decode=True)
     return body
+
+## This is where the script starts
 
 if len(sys.argv) < 2:
      sys.exit('You need to specify your group name')
