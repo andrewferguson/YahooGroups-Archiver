@@ -76,9 +76,8 @@ def getEmailBody(message):
              body += '</pre>'
     return body
 
-if len(sys.argv) < 1:
-     print 'You need to specify your group name'
-     sys.exit
+if len(sys.argv) < 2:
+     sys.exit('You need to specify your group name')
 
 groupName = sys.argv[1]
 oldDir = os.getcwd()
@@ -91,6 +90,8 @@ if os.path.exists(groupName):
          messageYear = getYahooMessageYear(file)
          archiveFile = archiveDir + '/archive-' + str(messageYear) + '.html'
          archiveYahooMessage(file, archiveFile, messageYear, 'utf-8')
+else:
+     sys.exit('Please run archive-group.py first')
 
 os.chdir(oldDir)
 print('Complete')
