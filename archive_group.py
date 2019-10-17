@@ -81,12 +81,15 @@ def group_messages_max(groupName):
 	try:
 		pageHTML = resp.text
 		pageJson = json.loads(pageHTML)
-	except ValueError:
+	except ValueError as valueError:
 		if "Stay signed in" in pageHTML and "Trouble signing in" in pageHTML:
 			#the user needs to be signed in to Yahoo
 			print ("Error. The group you are trying to archive is a private group. To archive a private group using this tool, login to a Yahoo account that has access to the private groups, then extract the data from the cookies Y and T from the domain yahoo.com . Paste this data into the appropriate variables (cookie_Y and cookie_T) at the top of this script, and run the script again.")
 			sys.exit()
+		else:
+			raise valueError
 	return pageJson["ygData"]["totalRecords"]
+
 
 def archive_message(groupName, msgNumber, depth=0):
 	global failed
