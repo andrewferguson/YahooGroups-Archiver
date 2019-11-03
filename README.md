@@ -1,3 +1,13 @@
+# This Script has been Archived
+
+Since Yahoo [announced they were closing Yahoo Groups](https://help.yahoo.com/kb/groups/SLN31010.html), this repo has received quite a lot of attention. I have been working with [Archive Team](https://www.archiveteam.org/index.php/Yahoo!_Groups) to try and archive as much of Yahoo Groups as possible, and during the course of this work others have developed a better script, that downloads files / photos / attachments / links / events, doesn't crash on errors, etc...
+
+This script can be found at: [https://github.com/IgnoredAmbience/yahoo-group-archiver](https://github.com/IgnoredAmbience/yahoo-group-archiver), and I would strongly encourage all future work on Yahoo Groups archiving scripts to happen on this repo.
+
+To those of you who've helped out on this repo, with bug reports, pull requests, ideas and suggestions: thanks. While I'd hoped that Yahoo would renew investment in Groups, the writing was on the wall back in 2015 when I wrote the first version of this script. My focus is now on saving as much of Groups as possible, and focusing work on IgnoredAmbience's script is the best way to do that.
+
+\[Written November 3rd, 2019. Groups is due to be closed December 14, 2019\]
+
 # YahooGroups-Archiver
 
 #### A simple python script that archives all messages from a public Yahoo Group
